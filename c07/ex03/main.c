@@ -13,7 +13,7 @@ int		main(void)
 	strs[3] = "is";
 	strs[4] = "SB!";
 
-	lstr = ft_strjoin(3, strs, ":_:");
+	lstr = ft_strjoin(5, strs, ":_:");
 
 	printf("%s\n", lstr);
 	return (0);
