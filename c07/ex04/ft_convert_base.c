@@ -6,11 +6,12 @@
 /*   By: sashin <aopaoi0987@naver.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 20:47:34 by sashin            #+#    #+#             */
-/*   Updated: 2020/11/03 21:13:38 by sashin           ###   ########.fr       */
+/*   Updated: 2020/11/04 00:27:59 by sashin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 int		ft_base_index(char c, char *base)
 {
@@ -48,7 +49,7 @@ int		ft_is_atoi_base(char *nbr, char *base_from, int length)
 		val = (val * length) + i;
 		++i;
 	}
-	return (val)
+	return (val);
 }
 
 int		ft_is_base_overlap(char *base, int length)
@@ -111,49 +112,57 @@ void	ft_nbr_tobase_digit(int nbr, int length, int *digit)
 	return ;
 }
 
-void	*ft_nbr_tobase_digit(int nbr, int length, int *digit)
-{
-	int		i;
-
-	i = 0;
-	if (nbr < length)
-	{
-		*digit = *digit + 1;
-		return ;
-	}
-	if (nbr > length)
-	{
-		*digit = *digit + 1;
-		ft_nbr_tobase_digit((nbr / length), length, digit);
-	}
-	return ;
-}
-
+/*
 void	ft_nbr_to_str(int nbr, char *base, char *result, int length)
 {
 	char num;
 
 	if (nbr < 0)
 	{
-		write(1, "-", 1);
-		if (nbr == -2147483648)
-		{
-			result = base[-(nbr % length)];
-			ft_nbr_to_str(-(nbr / length), base, result + 1, length);
-			write(1, &num, sizeof(char));
-
-			return ;
-		}
 		nbr = nbr * (-1);
+		*result = '-';
+		ft_nbr_to_str(nbr / length, base, result + 1, length);
+		return ;
 	}
-	num = base[nbr % length];
+	*result = base[nbr % length];
 	if (nbr >= length)
 	{
-		nbr = nbr / length;
-		ft_putnbr(nbr, base, length);
+		ft_nbr_to_str(nbr / length, base, result + 1, length);
+		return ;
 	}
-	write(1, &num, sizeof(char));
 }
+*/
+
+char	*ft_nbr_to_str(int nbr, char *base, int digit, int length)
+{
+	int		i;
+	char	*val;
+
+	val = (char *)malloc(sizeof(char) * (digit + 2));
+
+	val[digit + 1] = 0;
+	i = digit;
+	if (nbr < 0)
+	{
+		nbr = nbr * (-1);
+		val[0] = '-';
+		while (i > 0)
+		{	
+			val[i] = base[nbr % length];
+			nbr = nbr / length;
+		}
+	}
+	else
+	{
+		while (i > 0)
+		{	
+			val[i - 1] = base[nbr % length];
+			nbr = nbr / length;
+		}
+	}
+	return (val);
+}
+
 
 
 char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
@@ -162,7 +171,6 @@ char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 	int		btlength;
 	int		ten_val;
 	int		digit;
-	char	*result;
 
 	if (!ft_is_base_correct(base_from) || !ft_is_base_correct(base_to))
 		return (0);
@@ -175,6 +183,14 @@ char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 		++btlength;
 	ten_val = ft_is_atoi_base(nbr, base_from, bflength);
 	ft_nbr_tobase_digit(ten_val, btlength, &digit);
-	result = (char *)malloc(sizeof(char) * (digit + 1));
-	ft_nbr_base(ten_val, btlength, result);
+	return (ft_nbr_to_str(ten_val, base_to, digit, btlength));
 }
+
+int main(void)
+{
+	char	*result;
+
+	result = ft_convert_base("110", "01", "0123456789");
+	printf("%s\n", result);
+}
+
