@@ -6,7 +6,7 @@
 /*   By: sashin <aopaoi0987@naver.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 20:47:34 by sashin            #+#    #+#             */
-/*   Updated: 2020/11/04 00:27:59 by sashin           ###   ########.fr       */
+/*   Updated: 2020/11/04 17:33:30 by sashin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		ft_is_atoi_base(char *nbr, char *base_from, int length)
 {
 	int		i;
 	int		val;
+	int		idx;
 	int		sign;
 
 	i = 0;
@@ -44,12 +45,12 @@ int		ft_is_atoi_base(char *nbr, char *base_from, int length)
 			sign = sign * (-1);
 		++i;
 	}
-	while (ft_base_index(nbr[i], base_from) != -1)
+	while ((idx = ft_base_index(nbr[i], base_from)) != -1)
 	{
-		val = (val * length) + i;
+		val = (val * length) + idx;
 		++i;
 	}
-	return (val);
+	return (sign * val);
 }
 
 int		ft_is_base_overlap(char *base, int length)
@@ -139,7 +140,6 @@ char	*ft_nbr_to_str(int nbr, char *base, int digit, int length)
 	char	*val;
 
 	val = (char *)malloc(sizeof(char) * (digit + 2));
-
 	val[digit + 1] = 0;
 	i = digit;
 	if (nbr < 0)
@@ -150,15 +150,19 @@ char	*ft_nbr_to_str(int nbr, char *base, int digit, int length)
 		{	
 			val[i] = base[nbr % length];
 			nbr = nbr / length;
+			i--;
 		}
 	}
 	else
 	{
+		val[digit] = 0;
 		while (i > 0)
 		{	
 			val[i - 1] = base[nbr % length];
 			nbr = nbr / length;
+			i--;
 		}
+		
 	}
 	return (val);
 }
@@ -189,8 +193,11 @@ char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 int main(void)
 {
 	char	*result;
+	int		num;
 
-	result = ft_convert_base("110", "01", "0123456789");
+	result = ft_convert_base("4", "0123456789", "abcd");
 	printf("%s\n", result);
+	num = ft_is_atoi_base("4", "0123456789", 10);
+	printf("%d\n", num);
 }
 
