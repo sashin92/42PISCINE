@@ -6,12 +6,11 @@
 /*   By: sashin <aopaoi0987@naver.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 20:47:34 by sashin            #+#    #+#             */
-/*   Updated: 2020/11/04 17:33:30 by sashin           ###   ########.fr       */
+/*   Updated: 2020/11/04 17:46:46 by sashin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdio.h>
 
 int		ft_base_index(char c, char *base)
 {
@@ -98,17 +97,22 @@ int		ft_is_base_correct(char *base)
 void	ft_nbr_tobase_digit(int nbr, int length, int *digit)
 {
 	int		i;
-
+	int		abs_nbr;
+	
+	if (nbr >= 0)
+		abs_nbr = nbr;
+	else if (nbr < 0)
+		abs_nbr = -nbr;
 	i = 0;
-	if (nbr < length)
+	if (abs_nbr < length)
 	{
 		*digit = *digit + 1;
 		return ;
 	}
-	if (nbr > length)
+	if (abs_nbr >= length)
 	{
 		*digit = *digit + 1;
-		ft_nbr_tobase_digit((nbr / length), length, digit);
+		ft_nbr_tobase_digit((abs_nbr / length), length, digit);
 	}
 	return ;
 }
@@ -189,15 +193,3 @@ char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 	ft_nbr_tobase_digit(ten_val, btlength, &digit);
 	return (ft_nbr_to_str(ten_val, base_to, digit, btlength));
 }
-
-int main(void)
-{
-	char	*result;
-	int		num;
-
-	result = ft_convert_base("4", "0123456789", "abcd");
-	printf("%s\n", result);
-	num = ft_is_atoi_base("4", "0123456789", 10);
-	printf("%d\n", num);
-}
-
