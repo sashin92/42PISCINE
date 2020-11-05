@@ -1,43 +1,26 @@
 CC = gcc
-NAME = libft.a
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -c
 AR = ar
-ARFLAGS = crvs
-SOURCES_DIR = ./srcs/
-SOURCES = ft_putchar.c ft_swap.c ft_putstr.c ft_strlen.c ft_strcmp.c
-HEADER_DIR = ./includes/
+ARFLAGS = crv
+TARGET = libft.a
+HEADER_DIR =./includes
 HEADER = ft.h
-OBJECT = $(SOURCES:.c=.o)
+SRC_DIR = ./srcs
+SRC = ft_putchar.c ft_swap.c ft_putstr.c ft_strlen.c ft_strcmp.c
+OBJS = ./srcs/ft_putchar.o ./srcs/ft_swap.o ./srcs/ft_putstr.o ./srcs/ft_strlen.o ./srcs/ft_strcmp.o
 
-
-
-
-all: $(NAME)
-	
-
-$(NAME): $(OBJECT)
-	$(AR) $(ARFLAGS) $@ $(addprefix $(HEADER_DIR), $(HEADER))
-
-$(OBJECT): $(SROUCES)
-	$(CC) $(CFLAGS) -c $(addprefix $(SOURCES_DIR), $(SOURCES)) -I$(addprefix $(HEADER_DIR), $(HEADER))
-
-
-clean:
-	rm -f $(OBJECT)
-
-fclean: clean
-	rm -f $(NAME)
-
-re: fclean all
--------------------------------------------------------------------------------------
-
-all: $(TARGET)
-clean:
-	rm -rf $(OBJS)
-fclean:
-	rm -rf $(OBJS) $(TARGET)
-re:	fclean all
-$(TARGET) : $(addprefix $(HEADER_DIR)/, $(HEADER)) $(OBJS)
-	$(AR) $(ARFLAGS) $@ $^
 %.o: %.c
 	$(CC) $(CFLAGS) $^ -o $@ -I$(HEADER_DIR)
+
+all: $(TARGET)
+
+$(TARGET) : $(addprefix $(HEADER_DIR)/, $(HEADER)) $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
+
+clean:
+	rm -rf $(OBJS)
+
+fclean: clean
+	rm -rf $(TARGET)
+
+re:	fclean all
