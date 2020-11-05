@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 char *ft_strjoin(int size, char **strs, char *sep);
 
@@ -6,6 +7,8 @@ int		main(void)
 {
 	char **strs;
 	char *lstr;
+
+	strs = (char **)malloc(sizeof(char*) * 10);
 
 	strs[0] = "hello";
 	strs[1] = "world";
