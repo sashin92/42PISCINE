@@ -11,20 +11,33 @@ OBJECT = $(SOURCES:.c=.o)
 
 
 
+
 all: $(NAME)
-	$(AR) $(ARFLAGS) $@ $(addprefix $(HEADER_DIR), )
+	
 
+$(NAME): $(OBJECT)
+	$(AR) $(ARFLAGS) $@ $(addprefix $(HEADER_DIR), $(HEADER))
 
-$(NAME): $(SOURCES)
-	$(CC) $(CFLAGS) -c $(addprefix $(SOURCES_DIR), SOURCES)
-
+$(OBJECT): $(SROUCES)
+	$(CC) $(CFLAGS) -c $(addprefix $(SOURCES_DIR), $(SOURCES)) -I$(addprefix $(HEADER_DIR), $(HEADER))
 
 
 clean:
-	rm $(OBJECT)
+	rm -f $(OBJECT)
 
 fclean: clean
-	rm $(NAME)
+	rm -f $(NAME)
 
-re:
-	
+re: fclean all
+-------------------------------------------------------------------------------------
+
+all: $(TARGET)
+clean:
+	rm -rf $(OBJS)
+fclean:
+	rm -rf $(OBJS) $(TARGET)
+re:	fclean all
+$(TARGET) : $(addprefix $(HEADER_DIR)/, $(HEADER)) $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
+%.o: %.c
+	$(CC) $(CFLAGS) $^ -o $@ -I$(HEADER_DIR)

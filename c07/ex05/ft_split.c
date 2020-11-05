@@ -6,7 +6,7 @@
 /*   By: sashin <aopaoi0987@naver.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/04 19:17:13 by sashin            #+#    #+#             */
-/*   Updated: 2020/11/05 13:29:04 by sashin           ###   ########.fr       */
+/*   Updated: 2020/11/05 16:56:00 by sashin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int						ft_str_length(char *str, char *charset)
 
 	i = 0;
 	length = 0;
-	while (!ft_is_charset(str[i], charset))
+	while (!ft_is_charset(str[i], charset) && str[i])
 	{
 		++length;
 		++i;
