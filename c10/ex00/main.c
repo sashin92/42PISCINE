@@ -27,6 +27,7 @@ int     main(int argc, char **argv)
 		{
 			while (read(fd, buf, 1))
 				write(1, &buf[0], 1);
+			close(fd);
 		}
 		return (0);
 	}
