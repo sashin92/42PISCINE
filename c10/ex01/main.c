@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/errno.h>
+#include <libgen.h>
 
 void	ft_putstr(char *str)
 {
@@ -20,43 +21,44 @@ void	ft_cat_one(void)
 	}
 }
 
-int		ft_cat(char *cont)
+void		ft_cat(int argc, char **argv)
 {
+	int		i;
 	int		fd;
 	char	buf[1];
 
-	if ((fd = open(cont, O_RDONLY)) == -1)
+	i = 1;
+	while (i < argc)
 	{
-		write(1, "Error\n", 6);
-		return (-1);
+		if ((fd = open(argv[i], O_RDONLY)) == -1 && errno == 2)
+		{
+			ft_putstr(basename(argv[0]));
+			ft_putstr(": ");
+			ft_putstr(argv[i]);
+			ft_putstr(": ");
+			ft_putstr(strerror(errno));
+			ft_putstr("\n");
+		}
+		else
+		{
+			while (read(fd, buf, 1))
+				write(1, buf, 1);
+			close(fd);
+		}
+		++i;
 	}
-	else
-	{
-		while (read(fd, buf, 1))
-			write(1, buf, 1);
-		close(fd);
-	}
-	return (0);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	int		i;
 
 
-	ft_putstr(strerror(2));
+	// ft_putstr(strerror(2));
 	i = 1;
 	if (argc == 1 || (argv[1][0] == '-' && argv[1][1] == 0)
 				|| (argv[1][0] == '-' && argv[1][1] == '-' && argv[1][2] == 0))
 		ft_cat_one();
-	else
-	{
-		while (i < argc)
-		{
-			if (ft_cat(argv[i]) == -1)
-				return (0);
-			++i;
-		}
-	}
+	ft_cat(argc, argv);
 	return (0);	
 }
